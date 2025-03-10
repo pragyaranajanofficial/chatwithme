@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@chatwithbirds - Telegram Group Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="loginForm" class="form-container">
+            <h2>Admin Login</h2>
+            <form id="login">
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div id="dashboard" class="dashboard hidden">
+            <nav class="sidebar">
+                <div class="nav-header">
+                    <h3>@chatwithbirds</h3>
+                    <p id="welcomeMessage"></p>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+                <ul class="nav-items">
+                    <li data-panel="overviewPanel" class="active">Overview</li>
+                    <li data-panel="membersPanel">Members</li>
+                    <li data-panel="moderationPanel">Moderation</li>
+                    <li data-panel="automationPanel">Automation</li>
+                    <li data-panel="pollsPanel">Polls</li>
+                    <li data-panel="analyticsPanel">Analytics</li>
+                </ul>
+            </nav>
+
+            <main class="main-content">
+                <div id="overviewPanel" class="panel active">
+                    <h2>Group Overview</h2>
+                    <div class="group-info">
+                        <div class="group-header">
+                            <img src="" alt="Group Avatar" class="group-avatar" id="groupAvatar">
+                            <div>
+                                <h2>@chatwithbirds</h2>
+                                <p class="status-indicator">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text" id="groupConnectionStatus">Connecting...</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="group-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Created On</span>
+                                <span class="detail-value" id="groupCreatedDate">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Description</span>
+                                <span class="detail-value" id="groupDescription">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Total Members</span>
+                                <span class="detail-value" id="groupMemberCount">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Messages Today</span>
+                                <span class="detail-value" id="groupMessageCount">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Members</h4>
+                            <p id="totalMembers">0</p>
+                            <div class="live-indicator">Live</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Active Today</h4>
+                            <p id="activeToday">0</p>
+                            <div class="live-indicator">Live</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Bird Posts Today</h4>
+                            <p id="birdPosts">0</p>
+                            <div class="live-indicator">Live</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Growth Rate</h4>
+                            <p id="growthRate">0%</p>
+                        </div>
+                    </div>
+                    <div class="chart-container realtime-chart">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+
+                <div id="membersPanel" class="panel">
+                    <h2>Member Management</h2>
+                    <div class="search-bar">
+                        <input type="text" id="memberSearch" placeholder="Search members...">
+                        <button id="exportMembers" class="export-button">Export Members List</button>
+                    </div>
+                    <div class="members-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Last Active</th>
+                                    <th>Bird Posts</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="moderationPanel" class="panel">
+                    <h2>Content Moderation</h2>
+                    <div class="moderation-tools">
+                        <div class="filter-section">
+                            <h3>Bird Content Filters</h3>
+                            <div id="filtersList"></div>
+                            <button id="addFilter">Add Filter</button>
+                        </div>
+                        <div class="flagged-content">
+                            <h3>Flagged Messages</h3>
+                            <div id="flaggedList" class="live-messages"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="automationPanel" class="panel">
+                    <h2>Automation Settings</h2>
+                    <div class="automation-tools">
+                        <div class="welcome-message">
+                            <h3>Welcome Message</h3>
+                            <textarea id="welcomeMsg" rows="4"></textarea>
+                            <button id="saveWelcome">Save Message</button>
+                        </div>
+                        <div class="scheduled-posts">
+                            <h3>Scheduled Bird Posts</h3>
+                            <div id="scheduledList"></div>
+                            <button id="addScheduled">Schedule New Post</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pollsPanel" class="panel">
+                    <h2>Bird Polls & Surveys</h2>
+                    <div class="polls-container">
+                        <button id="createPoll">Create New Poll</button>
+                        <div id="activePolls"></div>
+                    </div>
+                </div>
+
+                <div id="analyticsPanel" class="panel">
+                    <h2>Group Analytics</h2>
+                    <div class="analytics-container">
+                        <div class="chart-container">
+                            <h3>Member Growth</h3>
+                            <canvas id="membershipChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Bird Content Engagement</h3>
+                            <canvas id="engagementChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Activity Heatmap</h3>
+                            <div id="heatmap"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+    <div class="connection-status">
+        <span id="connectionIndicator" class="status-dot"></span>
+        <span id="connectionStatus">Connected</span>
+    </div>
+
+    <div class="connection-controls">
+        <button id="reconnectBtn" class="reconnect-btn">
+            Reconnect
+        </button>
+        <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-text" id="connectionStatusText">Connected</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
